@@ -11,7 +11,6 @@ const staggerTL = gsap.timeline({
     toggleActions: "play reverse none none",
   },
 });
-
 staggerTL.add("start", 0);
 
 staggerTL.fromTo(
@@ -26,20 +25,32 @@ staggerTL.fromTo(
   },
   "start"
 );
+
+const containerWidth = $(".sticky-cards-container").length
+  ? $(".sticky-cards-container").width()
+  : 0;
+
+const containerPercentage = (containerWidth / 1280) * 80;
+
 function getRandom(seed, max) {
-  const x = Math.sin(1 + seed * 1238796123);
-  console.log(x);
+  const x = Math.sin(Math.sin(1 * seed * 2238));
   return x * max;
 }
 
 function rotate(i) {
-  return getRandom(i, 10);
+  return getRandom(i * 2, 3);
 }
+
 function positionX(i) {
-  return 10 * (i % 2 === 0 ? 1 : -1);
+  return (
+    (containerPercentage -
+      (i % 3) * containerPercentage +
+      getRandom(i * 3, 5)) *
+    -1
+  );
 }
 function positionY(i) {
-  return i * 15;
+  return Math.floor(i / 3) * 100 + getRandom(i / 12, -20);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -58,6 +69,32 @@ gsap.from(".number", {
     innerText: 1,
   },
 });
+
+const tabTimeline = gsap
+  .timeline({
+    scrollTrigger: {
+      trigger: ".section_stats46",
+      start: "top center",
+      toggleActions: "play play play reset",
+    },
+  })
+
+  .to(".tab-home", {
+    height: "+=20px",
+    marginTop: "-=20px",
+    duration: 0.2,
+    stagger: 0.1,
+  })
+  .to(
+    ".tab-home",
+    {
+      height: "auto",
+      marginTop: "+=20px",
+      duration: 0.15,
+      stagger: 0.1,
+    },
+    0.4
+  );
 
 /* -------------------------------------------------------------------------- */
 /*                        Unify, automate,sell smarter                        */
