@@ -2,6 +2,8 @@
 /*                             A new breed of CRM                             */
 /* -------------------------------------------------------------------------- */
 
+const MOBILE_BREAKPOINT = 600;
+
 const staggerTL = gsap.timeline({
   scrollTrigger: {
     trigger: ".sticky-cards-container",
@@ -42,6 +44,9 @@ function rotate(i) {
 }
 
 function positionX(i) {
+  if (window.innerWidth < MOBILE_BREAKPOINT) {
+    return 0; //getRandom(i * 5, 2);
+  }
   return (
     (containerPercentage -
       (i % 3) * containerPercentage +
@@ -50,6 +55,9 @@ function positionX(i) {
   );
 }
 function positionY(i) {
+  if (window.innerWidth < MOBILE_BREAKPOINT) {
+    return i * 2;
+  }
   return Math.floor(i / 3) * 100 + getRandom(i / 12, -20);
 }
 
