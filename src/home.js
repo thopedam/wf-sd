@@ -3,6 +3,7 @@
 /* -------------------------------------------------------------------------- */
 
 const MOBILE_BREAKPOINT = 600;
+const MAX_WIDTH = 1280;
 
 const staggerTL = gsap.timeline({
   scrollTrigger: {
@@ -28,11 +29,12 @@ staggerTL.fromTo(
   "start"
 );
 
-const containerWidth = $(".sticky-cards-container").length
-  ? $(".sticky-cards-container").width()
-  : 0;
+const containerWidth = () =>
+  $(".sticky-cards-container").length
+    ? $(".sticky-cards-container").width()
+    : 0;
 
-const containerPercentage = (containerWidth / 1280) * 80;
+const containerPercentage = () => (containerWidth() / MAX_WIDTH) * 80;
 
 function getRandom(seed, max) {
   const x = Math.sin(Math.sin(1 * seed * 2238));
@@ -48,8 +50,8 @@ function positionX(i) {
     return 0; //getRandom(i * 5, 2);
   }
   return (
-    (containerPercentage -
-      (i % 3) * containerPercentage +
+    (containerPercentage() -
+      (i % 3) * containerPercentage() +
       getRandom(i * 3, 5)) *
     -1
   );
