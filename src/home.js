@@ -133,11 +133,33 @@ tl.fromTo(
 ).to(".layout254_item > .home-separator", { scaleX: 0.0, stagger: 1.0 }, "end");
 
 tl.fromTo(
-  ".layout254_image",
+  ".mobile-separator > .home-separator",
+  { backgroundColor: "#3d3d3d", opacity: 0.3, scaleX: 0.0 },
+  { backgroundColor: "#6904C1", opacity: 1.0, scaleX: 1.0, stagger: 1.0 },
+  "start"
+).to(
+  ".mobile-separator > .home-separator",
+  {
+    backgroundColor: "#3d3d3d",
+    opacity: 0.3,
+    stagger: 1.0,
+  },
+  "end"
+);
+
+tl.fromTo(
+  ".sticky-content",
   { opacity: 0.0 },
   { opacity: 1.0, stagger: 1.0 },
   "start"
-).to(".layout254_image", { opacity: 0.0, stagger: 1.0 }, "end");
+).to(".sticky-content", { opacity: 0.0, stagger: 1.0 }, "end");
+
+tl.fromTo(
+  ".sticky-mobile-header",
+  { opacity: 0.0 },
+  { opacity: 1.0, stagger: 1.0 },
+  "start"
+).to(".sticky-mobile-header", { opacity: 0.0, stagger: 1.0 }, "end");
 
 /* -------------------------------------------------------------------------- */
 /*                 Unlock your sales potential with agentic AI                */
