@@ -3,8 +3,10 @@
 /* -------------------------------------------------------------------------- */
 
 const MOBILE_BREAKPOINT = 600;
+const TABLET_BREAKPOINT = 990;
 const MAX_WIDTH = 1280;
 const WINDOW_HEIGHT = window.innerHeight;
+const revalidateTimelines = [];
 
 const staggerTL = gsap.timeline({
   scrollTrigger: {
@@ -29,6 +31,7 @@ staggerTL.fromTo(
   },
   "start"
 );
+revalidateTimelines.push(staggerTL);
 
 const containerWidth = () =>
   $(".sticky-cards-container").length
@@ -50,18 +53,21 @@ function positionX(i) {
   if (window.innerWidth < MOBILE_BREAKPOINT) {
     return 0; //getRandom(i * 5, 2);
   }
-  return (
+  let value =
     (containerPercentage() -
       (i % 3) * containerPercentage() +
       getRandom(i * 3, 5)) *
-    -1
-  );
+    -1;
+  if (window.innerWidth < TABLET_BREAKPOINT) {
+    value *= 0.5;
+  }
+  return value;
 }
 function positionY(i) {
   if (window.innerWidth < MOBILE_BREAKPOINT) {
     return i * 2;
   }
-  return Math.floor(i / 3) * 100 + getRandom(i / 12, -20);
+  return Math.floor(i / 3) * 100 - 50 + getRandom(i / 12, -20);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -169,13 +175,40 @@ tl.fromTo(
 let switchTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".home-counter-switch",
-    start: "60% 50%",
-    end: "60% 50%",
+    start: "100% 50%",
+    end: "100% 50%",
     toggleActions: "play none reverse none",
   },
 });
+
+function endOpacity(i) {
+  return window.innerWidth < TABLET_BREAKPOINT ? 0.0 : 0.2;
+}
+
 switchTl.add("start", 0);
 switchTl.fromTo(".out_image", { opacity: 1.0 }, { opacity: 0.0 }, "start");
 switchTl.fromTo(".in_image", { opacity: 0.0 }, { opacity: 1.0 }, "start");
-switchTl.fromTo(".num_in", { opacity: 0.2 }, { opacity: 1.0 }, "start");
-switchTl.fromTo(".num_out", { opacity: 1.0 }, { opacity: 0.2 }, "start");
+switchTl.fromTo(".num_in", { opacity: endOpacity }, { opacity: 1.0 }, "start");
+
+gsap.from(".counter-out, .counter-in", {
+  scrollTrigger: {
+    trigger: ".home-counter-switch",
+    start: "top center",
+    toggleActions: "play play play reset",
+  },
+  innerText: 30,
+  duration: 1.5,
+  snap: {
+    innerText: 1,
+  },
+});
+
+switchTl.fromTo(".num_out", { opacity: 1.0 }, { opacity: endOpacity }, "start");
+revalidateTimelines.push(switchTl);
+
+window.addEventListener("resize", () => {
+  revalidateTimelines.forEach((tl) => {
+    tl.invalidate();
+    tl.restart();
+  });
+});
