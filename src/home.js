@@ -4,6 +4,7 @@
 
 const MOBILE_BREAKPOINT = 600;
 const MAX_WIDTH = 1280;
+const WINDOW_HEIGHT = window.innerHeight;
 
 const staggerTL = gsap.timeline({
   scrollTrigger: {
@@ -114,8 +115,8 @@ let tl = gsap.timeline({
   scrollTrigger: {
     trigger: ".ht-1",
     scrub: 1,
-    start: "-320px top",
-    end: "bottom bottom",
+    start: `${WINDOW_HEIGHT} bottom`,
+    end: "bottom center",
     toggleActions: "play reverse none none",
   },
 });
