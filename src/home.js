@@ -21,7 +21,7 @@ staggerTL.add("start", 0);
 
 staggerTL.fromTo(
   ".sticky-card",
-  { scale: 1.5, xPercent: -500, yPercent: -200, rotateZ: -45 },
+  { scale: 1.5, xPercent: xStart, yPercent: -200, rotateZ: -45 },
   {
     scale: 1.0,
     xPercent: positionX,
@@ -43,6 +43,10 @@ const containerPercentage = () => (containerWidth() / MAX_WIDTH) * 80;
 function getRandom(seed, max) {
   const x = Math.sin(Math.sin(1 * seed * 2238));
   return x * max;
+}
+
+function xStart(i) {
+  return i % 2 === 0 ? 500 : -500;
 }
 
 function rotate(i) {
