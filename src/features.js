@@ -14,7 +14,7 @@ $(barName)
     };
   });
 
-const duration = 2;
+const duration = 5;
 
 const tick = (element) => {
   clearTimeout(timeout);
