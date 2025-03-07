@@ -2,61 +2,105 @@
 /*                                Customer CRM                                */
 /* -------------------------------------------------------------------------- */
 
-let timeout;
-let timeline;
-const barName = ".features-customers-tab-bar-top";
-
-$(barName)
-  .children()
-  .each((_, element) => {
-    element.onclick = () => {
-      tick($(element));
-    };
-  });
+const tabs = [
+  {
+    barName: ".features-customers-tab-bar-top",
+    barElement: ".bar",
+    horizontal: true,
+  },
+  {
+    barName: ".features-collaboration-tab-menu",
+    barElement: ".vertical-bar",
+    horizontal: false,
+  },
+  {
+    barName: ".features-reporting-tab-menu",
+    barElement: ".vertical-bar",
+    horizontal: false,
+  },
+];
 
 const duration = 8;
 
-const tick = (element) => {
-  clearTimeout(timeout);
-  timeline?.totalProgress(1).kill();
-  const rect = element[0].getBoundingClientRect();
-  const isInView = rect.top >= 0 && rect.bottom <= window.innerHeight;
-  if (isInView) {
-    timeline = gsap
-      .timeline()
-      .fromTo(
-        element.find(".bar"),
-        {
-          transformOrigin: "bottom left",
-          scaleX: 0,
-          scaleY: "100%",
-          background: "#6904C1",
-        },
-        {
-          scaleX: 1,
-          duration,
-          ease: "linear",
+tabs.forEach(({ barName, horizontal, barElement }) => {
+  let timeout;
+  let timeline;
+  $(barName)
+    .children()
+    .each((_, element) => {
+      element.onclick = () => {
+        currentElement = $(element);
+        tick();
+      };
+    });
+
+  let currentElement = $(barName).children().first();
+
+  let isElementInView = false;
+
+  const tick = () => {
+    clearTimeout(timeout);
+    timeline?.totalProgress(1).kill();
+
+    if (isElementInView) {
+      timeline = gsap
+        .timeline()
+        .fromTo(
+          currentElement.find(barElement),
+          {
+            transformOrigin: horizontal ? "bottom left" : "top center",
+            scaleX: horizontal ? 0 : 1,
+            scaleY: horizontal ? 1 : 0,
+            opacity: 1,
+            background: "#6904C1",
+          },
+          {
+            scaleX: 1,
+            scaleY: horizontal ? undefined : 1,
+            duration,
+            ease: "linear",
+          }
+        )
+        .to(currentElement.find(barElement), {
+          scaleY: horizontal ? 0.5 : 1,
+          opacity: horizontal ? 1 : 0,
+          duration: 0.2,
+          background: "#A0A1AE",
+          ease: "power1.in",
+        });
+    }
+
+    timeout = setTimeout(() => {
+      let next = currentElement.next();
+      if (currentElement.next().length === 0) {
+        next = $(barName).children().first();
+      }
+      if (isElementInView) {
+        next.trigger("click");
+      }
+    }, duration * 1000);
+  };
+
+  $($(barName).children().first().trigger("click"));
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        isElementInView = entry.isIntersecting;
+        if (isElementInView) {
+          tick();
         }
-      )
-      .to(element.find(".bar"), {
-        scaleY: "50%",
-        duration: 0.2,
-        background: "#A0A1AE",
-        ease: "power1.in",
       });
-  }
-  timeout = setTimeout(() => {
-    let next = element.next();
-    if (element.next().length === 0) {
-      next = $(barName).children().first();
+    },
+    {
+      root: null,
+      threshold: 0.1,
     }
+  );
 
-    if (isInView) {
-      next.trigger("click");
-    } else {
-      tick(element);
-    }
-  }, duration * 1000);
-};
-
-$($(barName).children().first().trigger("click"));
+  $(barName)
+    .children()
+    .each((_, element) => {
+      observer.observe(element);
+    });
+});
