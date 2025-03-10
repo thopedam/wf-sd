@@ -65,6 +65,9 @@ function positionX(i) {
   if (window.innerWidth < TABLET_BREAKPOINT) {
     value *= 0.5;
   }
+  if (window.innerWidth > MAX_WIDTH) {
+    value *= window.innerWidth / MAX_WIDTH;
+  }
   return value;
 }
 function positionY(i) {
@@ -80,7 +83,7 @@ function positionY(i) {
 
 gsap.from(".number", {
   scrollTrigger: {
-    trigger: ".section_stats46",
+    trigger: ".section-problem",
     start: "top center",
     toggleActions: "play play play reset",
   },
@@ -94,7 +97,7 @@ gsap.from(".number", {
 const tabTimeline = gsap
   .timeline({
     scrollTrigger: {
-      trigger: ".section_stats46",
+      trigger: ".section-problem",
       start: "top center",
       toggleActions: "play play play reset",
     },
