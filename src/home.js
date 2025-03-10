@@ -7,6 +7,7 @@ const TABLET_BREAKPOINT = 990;
 const MAX_WIDTH = 1280;
 const WINDOW_HEIGHT = window.innerHeight;
 const revalidateTimelines = [];
+let width = window.innerWidth;
 
 const staggerTL = gsap.timeline({
   scrollTrigger: {
@@ -214,6 +215,8 @@ switchTl.fromTo(".num_out", { opacity: 1.0 }, { opacity: endOpacity }, "start");
 revalidateTimelines.push(switchTl);
 
 window.addEventListener("resize", () => {
+  if (width === window.innerWidth) return;
+  width = window.innerWidth;
   revalidateTimelines.forEach((tl) => {
     tl.invalidate();
     tl.restart();
