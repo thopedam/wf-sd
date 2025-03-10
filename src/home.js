@@ -11,6 +11,7 @@ let width = window.innerWidth;
 
 const staggerTL = gsap.timeline({
   scrollTrigger: {
+    normalize: true,
     trigger: ".sticky-cards-container",
     scrub: 1,
     start: "500px bottom",
