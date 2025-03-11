@@ -97,10 +97,5 @@ tabs.forEach(({ barName, horizontal, barElement }) => {
       threshold: 0.1,
     }
   );
-
-  $(barName)
-    .children()
-    .each((_, element) => {
-      observer.observe(element);
-    });
+  observer.observe($(barName)[0]);
 });
