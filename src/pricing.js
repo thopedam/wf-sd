@@ -1,10 +1,11 @@
+// Both tabs are connected and animate when changing
+
 const tabs = [
   { name: ".section-pricing-overview", tab: ".pricing-cards-overview" },
   { name: ".pricing-table", tab: ".pricing-table-tab" },
 ];
 tabs.forEach(({ name, tab }) => {
   let businessMonthly, businessYearly, enterpriseMonthly, enterpriseYearly;
-
   $(name)
     .find(".number")
     .each((index, item) => {
