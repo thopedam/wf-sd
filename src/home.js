@@ -184,9 +184,9 @@ tl.fromTo(
 let switchTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".home-counter-switch",
-    start: "100% 50%",
-    end: "100% 50%",
-    toggleActions: "play none reverse none",
+    start: "bottom 80%",
+    end: "bottom 80%",
+    toggleActions: "play none reverse reverse",
   },
 });
 
@@ -198,6 +198,7 @@ switchTl.add("start", 0);
 switchTl.fromTo(".out_image", { opacity: 1.0 }, { opacity: 0.0 }, "start");
 switchTl.fromTo(".in_image", { opacity: 0.0 }, { opacity: 1.0 }, "start");
 switchTl.fromTo(".num_in", { opacity: endOpacity }, { opacity: 1.0 }, "start");
+switchTl.fromTo(".num_out", { opacity: 1.0 }, { opacity: endOpacity }, "start");
 
 gsap.from(".counter-out, .counter-in", {
   scrollTrigger: {
@@ -212,7 +213,6 @@ gsap.from(".counter-out, .counter-in", {
   },
 });
 
-switchTl.fromTo(".num_out", { opacity: 1.0 }, { opacity: endOpacity }, "start");
 revalidateTimelines.push(switchTl);
 
 window.addEventListener("resize", () => {
